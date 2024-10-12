@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	DefaultAddress = ":8080"
+	DefaultAddress  = ":8080"
 	DefaultLogLevel = "debug"
 )
 
@@ -23,10 +23,10 @@ type Config struct {
 // Reads config from app.env file and returns config struct
 func NewConfig(path string) (*Config, error) {
 	cfg := &Config{
-		Address: DefaultAddress,
+		Address:  DefaultAddress,
 		LogLevel: DefaultLogLevel,
 	}
-	
+
 	log.Printf("loading config from %s", path)
 
 	viper.AddConfigPath(path)
@@ -34,7 +34,6 @@ func NewConfig(path string) (*Config, error) {
 	viper.SetConfigName("app")
 
 	viper.SetConfigType("env")
-
 
 	err := viper.ReadInConfig()
 	if err != nil {

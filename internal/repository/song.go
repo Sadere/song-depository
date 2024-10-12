@@ -191,7 +191,7 @@ func (r *PgSongRepository) Update(ctx context.Context, songID uint64, req domain
 		}).
 		PlaceholderFormat(sq.Dollar).
 		RunWith(r.db)
-	
+
 	if len(req.Group) > 0 {
 		sb = sb.Set("song_group", req.Group)
 	}

@@ -29,14 +29,14 @@ type ISongService interface {
 type SongService struct {
 	config   *config.Config
 	songRepo repository.SongRepository
-	log *zap.SugaredLogger
+	log      *zap.SugaredLogger
 }
 
 func NewSongService(config *config.Config, songRepo repository.SongRepository, log *zap.SugaredLogger) *SongService {
 	return &SongService{
 		config:   config,
 		songRepo: songRepo,
-		log: log,
+		log:      log,
 	}
 }
 

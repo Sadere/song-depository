@@ -1,0 +1,14 @@
+FROM golang:1.23.2
+
+RUN mkdir /app
+ADD . /app
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+
+RUN go build -o app ./cmd/music_info/main.go
+
+EXPOSE 8081
+
+CMD [ "/app/app" ]

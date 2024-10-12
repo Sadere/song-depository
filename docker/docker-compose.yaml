@@ -5,7 +5,7 @@ services:
     image: song:latest
     build:
       context: ../
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./docker/Dockerfile.main
     ports:
       - 8080:8080
     restart: always
@@ -13,6 +13,18 @@ services:
       DATABASE_DSN: postgresql://${POSTGRES_APP_USER}:${POSTGRES_APP_PASS}@postgres:${POSTGRES_PORT}/${POSTGRES_APP_DB}
     depends_on:
       - postgres
+    networks:
+      - song-network
+  info:
+    image: music-info:latest
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.info
+    ports:
+      - 8081:8081
+    restart: always
+    depends_on:
+      - song-service
     networks:
       - song-network
 

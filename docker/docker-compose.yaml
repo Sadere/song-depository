@@ -1,0 +1,21 @@
+name: song-api
+
+services:
+  song-service:
+    image: song:latest
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      DATABASE_DSN: postgresql://${POSTGRES_APP_USER}:${POSTGRES_APP_PASS}@postgres:${POSTGRES_PORT}/${POSTGRES_APP_DB}
+    depends_on:
+      - postgres
+    networks:
+      - song-network
+
+networks:
+  song-network:
+    driver: bridge

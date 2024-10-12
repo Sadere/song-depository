@@ -1,0 +1,246 @@
+basePath: /
+definitions:
+  ErrorResponse:
+    properties:
+      error:
+        example: Fatal error
+        type: string
+    type: object
+  domain.AddSongRequest:
+    properties:
+      group:
+        minLength: 1
+        type: string
+      song:
+        minLength: 1
+        type: string
+    required:
+    - group
+    - song
+    type: object
+  domain.ListSongsRequest:
+    properties:
+      filter:
+        $ref: '#/definitions/domain.SongFilter'
+      page:
+        type: integer
+    type: object
+  domain.SongFilter:
+    properties:
+      group:
+        type: string
+      name:
+        type: string
+      release_date:
+        example: "2024-10-29T15:04:05.000Z"
+        type: string
+      text:
+        type: string
+    type: object
+  domain.UpdateSongRequest:
+    properties:
+      group:
+        type: string
+      link:
+        type: string
+      release_date:
+        example: "2024-10-29T15:04:05.000Z"
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+    type: object
+  model.Song:
+    properties:
+      createdAt:
+        type: string
+      group:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      name:
+        type: string
+      releaseDate:
+        type: string
+      text:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact: {}
+  description: This API provides functions to store songs along with its info
+  title: Songs Depository API v1
+  version: "1.0"
+paths:
+  /list-songs:
+    post:
+      consumes:
+      - application/json
+      description: list songs based on filter and page
+      parameters:
+      - description: List songs request
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ListSongsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Song'
+            type: array
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: List songs
+      tags:
+      - songs
+  /song:
+    post:
+      consumes:
+      - application/json
+      description: Add new song to depository
+      parameters:
+      - description: Add new song request
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/domain.AddSongRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Add song
+      tags:
+      - songs
+  /song-text/:
+    get:
+      description: Gets specific verse of requested song's text
+      parameters:
+      - description: Song ID
+        in: query
+        name: id
+        type: integer
+      - description: Number of verse to return (starting at 0)
+        in: query
+        name: verse
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Get song text
+      tags:
+      - songs
+  /song/{song_id}:
+    delete:
+      description: Deletes song with song_id from depository
+      parameters:
+      - description: Song ID
+        in: path
+        name: song_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Delete song
+      tags:
+      - songs
+    put:
+      consumes:
+      - application/json
+      description: Edit any song info
+      parameters:
+      - description: Song ID
+        in: path
+        name: song_id
+        required: true
+        type: integer
+      - description: Edit song request
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateSongRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Edit song info
+      tags:
+      - songs
+swagger: "2.0"

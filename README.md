@@ -1,6 +1,7 @@
 # Install and run
 1. Copy app.env.example as app.env
-2. Build docker containers and run server:
+2. Copy docker/.env.example as docker/.env
+3. Build docker containers and run server:
 `make up`
 
 # Swagger
